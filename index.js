@@ -1,11 +1,18 @@
 const express = require('express');
-const app = express();
+const { MongoClient, ServerApiVersion } = require('mongodb'); 
 const port = process.env.PORT || 5000;
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const app = express();
 require('dotenv').config()
+
+const cors = require('cors');
+
 
 // db:foodPoint
 //pass:JYh9krCt2WlRhBmV
+
+// middleware
+// app.use(cors());
+// app.use(express.json());
 
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.jpgna.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
@@ -36,7 +43,7 @@ async function run(){
 
     }
     finally{
-        await client.close()
+        // await client.close();
     }
 
 }
