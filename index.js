@@ -7,19 +7,14 @@ require('dotenv').config()
 const cors = require('cors');
 
 
-// db:foodPoint
-//pass:JYh9krCt2WlRhBmV
-
 // middleware
-// app.use(cors());
-// app.use(express.json());
+app.use(cors());
+app.use(express.json());
 
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.jpgna.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
-
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-
 
 async function run(){
     try{
@@ -27,18 +22,30 @@ async function run(){
         
         const database= client.db('foodPoint');
         const restaurantsCollection = database.collection('restaurants');
+        const foodsCollection = database.collection('foods');
+        const ordersCollection = database.collection('orders');
 
         // GET API
         app.get('/restaurants', async (req, res) => {
             const cursor = restaurantsCollection.find({});
             const result = await cursor.toArray();
-            console.log(result);
+            // console.log(result);
+            res.send(result);
+        });
+
+        app.get('/foods', async (req, res) => {
+            const cursor = foodsCollection.find({});
+            const result = await cursor.toArray();
+            // console.log(result);
             res.send(result);
         });
         // POST API
-        // app.post('/restaurants', async(req, res) => {
-        //     const 
-        // })
+        app.post('/orders', async(req, res) => {
+            const order = req.body;
+            const result = await ordersCollection.insertOne(order);
+            console.log(result);
+            res.send(result);
+        })
 
 
     }
