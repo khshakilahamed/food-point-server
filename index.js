@@ -6,11 +6,9 @@ require('dotenv').config()
 
 const cors = require('cors');
 
-
 // middleware
 app.use(cors());
 app.use(express.json());
-
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.jpgna.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
@@ -29,16 +27,22 @@ async function run(){
         app.get('/restaurants', async (req, res) => {
             const cursor = restaurantsCollection.find({});
             const result = await cursor.toArray();
-            // console.log(result);
             res.send(result);
         });
 
         app.get('/foods', async (req, res) => {
             const cursor = foodsCollection.find({});
             const result = await cursor.toArray();
-            // console.log(result);
             res.send(result);
         });
+
+        app.get('/orders', async (req, res) => {
+            const cursor = ordersCollection.find({});
+            const result = await cursor.toArray();
+            console.log(result);
+            res.send(result);
+        });
+
         // POST API
         app.post('/orders', async(req, res) => {
             const order = req.body;
@@ -46,8 +50,6 @@ async function run(){
             console.log(result);
             res.send(result);
         })
-
-
     }
     finally{
         // await client.close();
