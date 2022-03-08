@@ -59,6 +59,21 @@ async function run(){
             res.send(result);
         });
 
+        // PUT/update API
+        app.put('/orders/:id', async(req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const options = { upsert: true };
+            const updateDoc = {
+                $set:{
+                    orderStatus: 'Approved',
+                }
+            }
+            const result = await ordersCollection.updateOne(filter, updateDoc, options);
+            // console.log(id);
+            res.send(result);
+        })
+
         // DELETE API
         app.delete('/orders/:id', async(req, res) => {
             const id = req.params.id;
